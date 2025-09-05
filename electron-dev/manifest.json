@@ -1,0 +1,8 @@
+{
+  "container": "electronuserland/builder:wine",
+  "install": "npm install -g electron electron-builder",
+  "update": "npm update -g electron electron-builder",
+  "run": "electron"
+,
+  "about": "Desktop app framework. Build cross-platform desktop apps"
+}

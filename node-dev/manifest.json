@@ -1,0 +1,6 @@
+{
+  "container": "node:20-bullseye",
+  "install": "npm install -g typescript ts-node nodemon jest mocha chai eslint prettier webpack vite npm-check-updates yarn pnpm",
+  "update": "npm update -g typescript ts-node nodemon jest mocha chai eslint prettier webpack vite npm-check-updates yarn pnpm",
+  "run": "node"
+}

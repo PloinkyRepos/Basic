@@ -1,0 +1,8 @@
+{
+  "container": "docker:24-cli",
+  "install": "apk add --no-cache bash git curl",
+  "update": "apk update && apk upgrade",
+  "run": "docker"
+,
+  "about": "Docker CLI for container management. Build, run, push images, manage containers"
+}

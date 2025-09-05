@@ -1,0 +1,8 @@
+{
+  "container": "mcr.microsoft.com/devcontainers/base:debian",
+  "install": "echo 'No installation needed for simpleBash.'",
+  "update": "",
+  "run": "bash"
+,
+  "about": "Bash shell environment. Run any bash commands and scripts"
+}

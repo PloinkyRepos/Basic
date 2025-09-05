@@ -1,0 +1,8 @@
+{
+  "container": "dpokidov/imagemagick:latest",
+  "install": "echo 'ImageMagick ready'",
+  "update": "echo 'Updated via container'",
+  "run": "convert"
+,
+  "about": "Image manipulation. Convert, resize, optimize images"
+}

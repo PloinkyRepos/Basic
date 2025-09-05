@@ -1,0 +1,8 @@
+{
+  "container": "curlimages/curl:latest",
+  "install": "echo 'curl ready'",
+  "update": "echo 'Always latest'",
+  "run": "curl"
+,
+  "about": "HTTP client. Make requests, test APIs, download files"
+}

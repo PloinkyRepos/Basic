@@ -1,0 +1,8 @@
+{
+  "container": "postman/newman:alpine",
+  "install": "echo 'Newman CLI ready'",
+  "update": "echo 'Updated via container'",
+  "run": "newman"
+,
+  "about": "Newman API testing. Run Postman collections from CLI"
+}

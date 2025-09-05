@@ -1,0 +1,6 @@
+{
+  "container": "denoland/deno:alpine",
+  "install": "echo 'Deno runtime ready'",
+  "update": "deno upgrade",
+  "run": "deno"
+}

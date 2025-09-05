@@ -1,0 +1,7 @@
+{
+  "container": "clamav/clamav:latest",
+  "install": "freshclam",
+  "update": "freshclam",
+  "run": "clamscan -r --bell -i",
+  "about": "Antivirus scanner. Use -r for recursive, -i show infected only, --bell sound alert, --remove delete infected files"
+}

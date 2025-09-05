@@ -1,0 +1,8 @@
+{
+  "container": "postgres:16-alpine",
+  "install": "apk add --no-cache bash pgcli",
+  "update": "apk update && apk upgrade",
+  "run": "psql"
+,
+  "about": "PostgreSQL client. Execute SQL, manage databases, run psql commands"
+}

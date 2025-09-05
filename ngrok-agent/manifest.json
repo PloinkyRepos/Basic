@@ -1,0 +1,8 @@
+{
+  "container": "ngrok/ngrok:alpine",
+  "install": "echo 'ngrok ready'",
+  "update": "ngrok update",
+  "run": "ngrok"
+,
+  "about": "Tunnel local ports. Expose local servers to internet"
+}

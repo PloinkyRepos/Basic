@@ -1,0 +1,8 @@
+{
+  "container": "golang:1.21-bullseye",
+  "install": "go install golang.org/x/tools/gopls@latest && go install github.com/go-delve/delve/cmd/dlv@latest && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+  "update": "go install -u golang.org/x/tools/gopls@latest && go install -u github.com/go-delve/delve/cmd/dlv@latest && go install -u github.com/golangci/golangci-lint/cmd/golangci-lint@latest",
+  "run": "go"
+,
+  "about": "Go development with gopls, golangci-lint. Build, test, format Go code with coverage"
+}

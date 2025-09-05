@@ -1,0 +1,8 @@
+{
+  "container": "ghcr.io/puppeteer/puppeteer:latest",
+  "install": "npm install -g puppeteer-cli",
+  "update": "npm update -g puppeteer-cli",
+  "run": "node"
+,
+  "about": "Headless Chrome automation. Web scraping, testing, screenshots"
+}

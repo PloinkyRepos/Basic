@@ -1,0 +1,8 @@
+{
+  "container": "stedolan/jq:latest",
+  "install": "echo 'jq ready'",
+  "update": "echo 'Updated via container'",
+  "run": "jq"
+,
+  "about": "JSON processor. Parse, filter, transform JSON data"
+}
