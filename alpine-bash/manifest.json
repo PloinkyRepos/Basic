@@ -1,6 +1,6 @@
 {
-  "container": "buildpack-deps:stable",
-  "install": "echo 'No installation needed for simpleBash.'",
+  "container": "alpine:latest",
+  "install": "apk add alpine-sdk",
   "update": "",
   "run": "bash"
 ,

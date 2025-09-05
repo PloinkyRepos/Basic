@@ -1,5 +1,5 @@
 {
-  "container": "buildpack-deps:stable",
+  "container": "rockylinux",
   "install": "echo 'No installation needed for simpleBash.'",
   "update": "",
   "run": "bash"
