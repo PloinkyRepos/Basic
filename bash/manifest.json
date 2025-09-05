@@ -1,6 +1,6 @@
 {
-  "container": "buildpack-deps:stable",
-  "install": "echo 'No installation needed for simpleBash.'",
+  "container": "buildpack-deps:latest",
+  "install": "echo 'No installation needed for buildpack Bash.'",
   "update": "",
   "run": "bash"
 ,
