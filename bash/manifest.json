@@ -3,5 +3,6 @@
   "install": "echo 'No installation needed for buildpack Bash.'",
   "update": "",
   "run": "bash",
+   "runTask":"echo 'Success! Used by tests only'"
   "about": "Bash shell environment. Run any bash commands and scripts"
 }
