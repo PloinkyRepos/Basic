@@ -3,6 +3,6 @@
   "install": "echo 'No installation needed for buildpack Bash.'",
   "update": "",
   "cli": "bash",
-  "agent":"echo 'Success! Used by tests only'",
+  "agent":"",
   "about": "Bash shell environment. Run any bash commands and scripts"
 }
