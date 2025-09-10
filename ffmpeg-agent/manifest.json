@@ -1,6 +1,0 @@
-{
-  "container": "linuxserver/ffmpeg:latest",
-  "install": "echo 'FFmpeg ready'",
-  "update": "echo 'Updated via container'",
-  "run": "ffmpeg"
-}

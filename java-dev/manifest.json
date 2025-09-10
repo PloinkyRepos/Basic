@@ -1,6 +1,0 @@
-{
-  "container": "maven:3.9-openjdk-17",
-  "install": "apt-get update && apt-get install -y gradle git",
-  "update": "apt-get update && apt-get upgrade -y",
-  "run": "java"
-}

@@ -1,8 +1,0 @@
-{
-  "container": "pandoc/latex:latest",
-  "install": "echo 'Pandoc with LaTeX ready'",
-  "update": "echo 'Updated via container'",
-  "run": "pandoc"
-,
-  "about": "Document converter. Convert between markup formats"
-}

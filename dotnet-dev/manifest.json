@@ -1,8 +1,0 @@
-{
-  "container": "mcr.microsoft.com/dotnet/sdk:8.0",
-  "install": "dotnet tool install --global dotnet-ef && dotnet tool install --global dotnet-format",
-  "update": "dotnet tool update --global dotnet-ef && dotnet tool update --global dotnet-format",
-  "run": "dotnet"
-,
-  "about": ".NET 8 SDK with EF Core. Build, test, publish .NET applications"
-}

@@ -1,8 +1,0 @@
-{
-  "container": "python:3.11-bullseye",
-  "install": "pip install --upgrade pip && pip install pytest pytest-cov black flake8 mypy pylint ipython jupyter notebook pandas numpy requests flask django fastapi uvicorn",
-  "update": "pip install --upgrade pip pytest pytest-cov black flake8 mypy pylint ipython jupyter notebook pandas numpy requests flask django fastapi uvicorn",
-  "run": "python"
-,
-  "about": "Python development environment with pytest, black, jupyter. Run scripts, tests, notebooks, linting"
-}

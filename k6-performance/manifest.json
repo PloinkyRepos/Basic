@@ -1,8 +1,0 @@
-{
-  "container": "grafana/k6:latest",
-  "install": "echo 'k6 ready for performance testing'",
-  "update": "echo 'Updated via container'",
-  "run": "k6"
-,
-  "about": "Load testing tool. Performance testing with scenarios, metrics export"
-}
