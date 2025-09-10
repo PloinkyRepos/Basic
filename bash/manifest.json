@@ -1,5 +1,5 @@
 {
-  "container": "buildpack-deps:latest",
+  "container": "nodealpine:latest",
   "install": "echo 'No installation needed for buildpack Bash.'",
   "update": "",
   "cli": "bash",
