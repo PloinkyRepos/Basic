@@ -1,0 +1,8 @@
+{
+  "container": "node:20.19.5-alpine",
+  "install": "echo 'No installation needed for buildpack Bash.'",
+  "update": "",
+  "cli": "sh",
+  "agent":"",
+  "about": "Bash shell environment. Run any bash commands and scripts"
+}
