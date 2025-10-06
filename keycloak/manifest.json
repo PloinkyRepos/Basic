@@ -1,0 +1,14 @@
+{
+  "container": "quay.io/keycloak/keycloak:24.0",
+  "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
+  "agent": "start-dev --http-port=9090 --hostname-strict=false",
+  "cli": "/opt/keycloak/bin/kc.sh",
+  "env": [
+    "KEYCLOAK_ADMIN",
+    "KEYCLOAK_ADMIN_PASSWORD"
+  ],
+  "ports": ["9090:9090"],
+  "volumes": {
+    ".ploinky/keycloak-data": "/opt/keycloak/data"
+  }
+}
