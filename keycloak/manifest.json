@@ -1,14 +1,71 @@
 {
-  "container": "quay.io/keycloak/keycloak:24.0",
-  "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
-  "agent": "start-dev --http-port=9090 --hostname-strict=false",
-  "cli": "/opt/keycloak/bin/kc.sh",
-  "env": [
-    "KEYCLOAK_ADMIN",
-    "KEYCLOAK_ADMIN_PASSWORD"
-  ],
-  "ports": ["9090:9090"],
-  "volumes": {
-    ".ploinky/keycloak-data": "/opt/keycloak/data"
-  }
+    "container": "quay.io/keycloak/keycloak:24.0",
+    "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
+    "agent": "start-dev --http-port=9090 --hostname-strict=false",
+    "cli": "/opt/keycloak/bin/kc.sh",
+    "env": {
+        "KEYCLOAK_ADMIN": {
+            "varName": "SSO_ADMIN",
+            "required": "false",
+            "default": "admin"
+        },
+        "KEYCLOAK_ADMIN_PASSWORD": {
+            "varName": "SSO_ADMIN_PASSWORD",
+            "required": "false",
+            "default": "admin"
+        },
+        "KEYCLOAK_URL": {
+            "varName": "SSO_BASE_URL",
+            "required": "true"
+        },
+        "KEYCLOAK_REALM": {
+            "varName": "SSO_REALM",
+            "required": "false",
+            "default": "ploinky"
+        },
+        "KEYCLOAK_CLIENT_ID": {
+            "varName": "SSO_CLIENT_ID",
+            "required": "false",
+            "default": "ploinky-router"
+        },
+        "KEYCLOAK_SCOPE": {
+            "varName": "SSO_SCOPE",
+            "required": "false",
+            "default": "openid profile email"
+        },
+        "KEYCLOAK_REDIRECT_URI": {
+            "varName": "SSO_REDIRECT_URI",
+            "required": "false"
+        },
+        "KEYCLOAK_LOGOUT_REDIRECT_URI": {
+            "varName": "SSO_LOGOUT_REDIRECT_URI",
+            "required": "false"
+        },
+        "KC_DB": {
+            "varName": "SSO_DB_ENGINE",
+            "required": "false"
+        },
+        "KC_DB_URL_HOST": {
+            "varName": "SSO_DB_HOST",
+            "required": "false"
+        },
+        "KC_DB_URL_DATABASE": {
+            "varName": "SSO_DB_NAME",
+            "required": "false"
+        },
+        "KC_DB_USERNAME": {
+            "varName": "SSO_DB_USERNAME",
+            "required": "false"
+        },
+        "KC_DB_PASSWORD": {
+            "varName": "SSO_DB_PASSWORD",
+            "required": "false"
+        }
+    },
+    "ports": [
+        "9090:9090"
+    ],
+    "volumes": {
+        ".ploinky/keycloak-data": "/opt/keycloak/data"
+    }
 }
