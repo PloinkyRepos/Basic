@@ -42,7 +42,8 @@
         },
         "KC_DB": {
             "varName": "SSO_DB_ENGINE",
-            "required": "false"
+            "required": "false",
+            "default": "dev-file"
         },
         "KC_DB_URL_HOST": {
             "varName": "SSO_DB_HOST",
