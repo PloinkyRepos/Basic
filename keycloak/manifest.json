@@ -65,6 +65,6 @@
         "9090:9090"
     ],
     "volumes": {
-        ".ploinky/keycloak-data": "/opt/keycloak/data"
+        "keycloak/keycloak-data": "/opt/keycloak/data"
     }
 }
