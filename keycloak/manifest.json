@@ -29,8 +29,7 @@
         },
         "KEYCLOAK_SCOPE": {
             "varName": "SSO_SCOPE",
-            "required": "false",
-            "default": "openid,profile,email"
+            "required": "false"
         },
         "KEYCLOAK_REDIRECT_URI": {
             "varName": "SSO_REDIRECT_URI",
