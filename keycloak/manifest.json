@@ -1,7 +1,7 @@
 {
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
-    "agent": "start-dev --http-port=9090 --hostname-strict=false",
+    "agent": "start --http-port=9090",
     "env": {
         "KEYCLOAK_ADMIN": {
             "varName": "SSO_ADMIN",
@@ -42,23 +42,39 @@
         "KC_DB": {
             "varName": "SSO_DB_ENGINE",
             "required": "false",
-            "default": "dev-file"
+            "default": "postgres"
         },
-        "KC_DB_URL_HOST": {
-            "varName": "SSO_DB_HOST",
-            "required": "false"
-        },
-        "KC_DB_URL_DATABASE": {
-            "varName": "SSO_DB_NAME",
+        "KC_DB_URL": {
+            "varName": "SSO_DB_URL",
             "required": "false"
         },
         "KC_DB_USERNAME": {
             "varName": "SSO_DB_USERNAME",
-            "required": "false"
+            "required": "false",
+            "default": "keycloak"
         },
         "KC_DB_PASSWORD": {
             "varName": "SSO_DB_PASSWORD",
             "required": "false"
+        },
+        "KC_HOSTNAME": {
+            "varName": "SSO_HOSTNAME",
+            "required": "false"
+        },
+        "KC_HOSTNAME_STRICT": {
+            "varName": "SSO_HOSTNAME_STRICT",
+            "required": "false",
+            "default": "false"
+        },
+        "KC_HTTP_ENABLED": {
+            "varName": "SSO_HTTP_ENABLED",
+            "required": "false",
+            "default": "true"
+        },
+        "KC_PROXY": {
+            "varName": "SSO_PROXY",
+            "required": "false",
+            "default": "edge"
         }
     },
     "ports": [
