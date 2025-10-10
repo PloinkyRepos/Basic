@@ -2,6 +2,9 @@
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
     "agent": "start --http-port=9090",
+    "enable": [
+        "postgres"
+    ],
     "env": {
         "KEYCLOAK_ADMIN": {
             "varName": "SSO_ADMIN",
