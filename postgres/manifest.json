@@ -2,37 +2,16 @@
     "container": "postgres:16-alpine",
     "about": "PostgreSQL database server for Keycloak and other applications",
     "agent": "postgres",
-    "env": {
-        "POSTGRES_USER": {
-            "varName": "POSTGRES_USER",
-            "required": false,
-            "default": "keycloak"
-        },
-        "POSTGRES_PASSWORD": {
-            "varName": "POSTGRES_PASSWORD",
-            "required": true
-        },
-        "POSTGRES_DB": {
-            "varName": "POSTGRES_DB",
-            "required": false,
-            "default": "keycloak"
-        },
-        "PGDATA": {
-            "varName": "PGDATA",
-            "required": false,
-            "default": "/var/lib/postgresql/data/pgdata"
-        }
-    },
+    "env": [
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_DB",
+        "PGDATA"
+    ],
     "ports": [
         "5432:5432"
     ],
     "volumes": {
         "postgres/data": "/var/lib/postgresql/data"
-    },
-    "healthcheck": {
-        "test": "pg_isready -U ${POSTGRES_USER:-keycloak}",
-        "interval": "10s",
-        "timeout": "5s",
-        "retries": 5
     }
 }
