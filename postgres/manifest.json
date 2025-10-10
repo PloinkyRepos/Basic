@@ -1,5 +1,5 @@
 {
-    "container": "postgres:16-alpine",
+    "container": "docker.io/library/postgres:16-alpine",
     "about": "PostgreSQL database server for Keycloak and other applications",
     "agent": "postgres",
     "env": [
