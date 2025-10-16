@@ -2,7 +2,6 @@
     "container": "docker.io/library/postgres:16-alpine",
     "about": "PostgreSQL database server for Keycloak and other applications",
     "agent": "postgres",
-    "networkMode": "host",
     "env": [
         "POSTGRES_USER",
         "POSTGRES_PASSWORD",
