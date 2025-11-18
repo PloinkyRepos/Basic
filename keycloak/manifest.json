@@ -1,7 +1,7 @@
 {
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
-    "start": "start --hostname-strict=false --http-enabled=true --proxy-headers forwarded",
+    "agent": "start --hostname-strict=false --http-enabled=true --proxy-headers forwarded",
     "env": {
         "KC_HTTP_PORT": {
             "varName": "SSO_HTTP_PORT",
