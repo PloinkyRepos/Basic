@@ -88,7 +88,7 @@
         }
     },
     "ports": [
-        "0.0.0.0:9090:9090"
+        "0.0.0.0:9091:9091"
     ],
     "volumes": {
         "keycloak/keycloak-data": "/opt/keycloak/data"
