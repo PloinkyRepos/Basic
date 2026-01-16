@@ -2,95 +2,99 @@
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
     "start": "start --hostname-strict=false --http-enabled=true --proxy-headers forwarded",
-    "env": {
-        "KC_HTTP_PORT": {
-            "varName": "SSO_HTTP_PORT",
-            "required": "false",
-            "default": "9090"
-        },
-        "KEYCLOAK_ADMIN": {
-            "varName": "SSO_ADMIN",
-            "required": "false",
-            "default": "admin"
-        },
-        "KEYCLOAK_ADMIN_PASSWORD": {
-            "varName": "SSO_ADMIN_PASSWORD",
-            "required": "false",
-            "default": "admin"
-        },
-        "KEYCLOAK_URL": {
-            "varName": "SSO_BASE_URL",
-            "required": "true"
-        },
-        "KEYCLOAK_REALM": {
-            "varName": "SSO_REALM",
-            "required": "false",
-            "default": "ploinky"
-        },
-        "KEYCLOAK_CLIENT_ID": {
-            "varName": "SSO_CLIENT_ID",
-            "required": "false",
-            "default": "ploinky-router"
-        },
-        "KEYCLOAK_SCOPE": {
-            "varName": "SSO_SCOPE",
-            "required": "false"
-        },
-        "KEYCLOAK_REDIRECT_URI": {
-            "varName": "SSO_REDIRECT_URI",
-            "required": "false"
-        },
-        "KEYCLOAK_LOGOUT_REDIRECT_URI": {
-            "varName": "SSO_LOGOUT_REDIRECT_URI",
-            "required": "false"
-        },
-        "KC_DB": {
-            "varName": "SSO_DB_ENGINE",
-            "required": "false",
-            "default": "postgres"
-        },
-        "KC_DB_URL": {
-            "varName": "SSO_DB_URL",
-            "required": "false"
-        },
-        "KC_DB_USERNAME": {
-            "varName": "SSO_DB_USERNAME",
-            "required": "false",
-            "default": "keycloak"
-        },
-        "KC_DB_PASSWORD": {
-            "varName": "SSO_DB_PASSWORD",
-            "required": "false"
-        },
-        "KC_HOSTNAME": {
-            "varName": "SSO_HOSTNAME",
-            "required": "false"
-        },
-        "KC_HOSTNAME_STRICT": {
-            "varName": "SSO_HOSTNAME_STRICT",
-            "required": "false",
-            "default": "false"
-        },
-        "KC_HTTP_ENABLED": {
-            "varName": "SSO_HTTP_ENABLED",
-            "required": "false",
-            "default": "true"
-        },
-        "KC_PROXY": {
-            "varName": "SSO_PROXY",
-            "required": "false",
-            "default": "edge"
-        },
-        "JAVA_OPTS_APPEND": {
-            "varName": "SSO_JAVA_OPTS",
-            "required": "false",
-            "default": "-Xms256m -Xmx512m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m"
-        }
-    },
     "ports": [
         "0.0.0.0:9091:9091"
     ],
     "volumes": {
         "keycloak/keycloak-data": "/opt/keycloak/data"
+    },
+    "profiles": {
+        "default": {
+            "env": {
+                "KC_HTTP_PORT": {
+                    "varName": "SSO_HTTP_PORT",
+                    "required": "false",
+                    "default": "9090"
+                },
+                "KEYCLOAK_ADMIN": {
+                    "varName": "SSO_ADMIN",
+                    "required": "false",
+                    "default": "admin"
+                },
+                "KEYCLOAK_ADMIN_PASSWORD": {
+                    "varName": "SSO_ADMIN_PASSWORD",
+                    "required": "false",
+                    "default": "admin"
+                },
+                "KEYCLOAK_URL": {
+                    "varName": "SSO_BASE_URL",
+                    "required": "true"
+                },
+                "KEYCLOAK_REALM": {
+                    "varName": "SSO_REALM",
+                    "required": "false",
+                    "default": "ploinky"
+                },
+                "KEYCLOAK_CLIENT_ID": {
+                    "varName": "SSO_CLIENT_ID",
+                    "required": "false",
+                    "default": "ploinky-router"
+                },
+                "KEYCLOAK_SCOPE": {
+                    "varName": "SSO_SCOPE",
+                    "required": "false"
+                },
+                "KEYCLOAK_REDIRECT_URI": {
+                    "varName": "SSO_REDIRECT_URI",
+                    "required": "false"
+                },
+                "KEYCLOAK_LOGOUT_REDIRECT_URI": {
+                    "varName": "SSO_LOGOUT_REDIRECT_URI",
+                    "required": "false"
+                },
+                "KC_DB": {
+                    "varName": "SSO_DB_ENGINE",
+                    "required": "false",
+                    "default": "postgres"
+                },
+                "KC_DB_URL": {
+                    "varName": "SSO_DB_URL",
+                    "required": "false"
+                },
+                "KC_DB_USERNAME": {
+                    "varName": "SSO_DB_USERNAME",
+                    "required": "false",
+                    "default": "keycloak"
+                },
+                "KC_DB_PASSWORD": {
+                    "varName": "SSO_DB_PASSWORD",
+                    "required": "false"
+                },
+                "KC_HOSTNAME": {
+                    "varName": "SSO_HOSTNAME",
+                    "required": "false"
+                },
+                "KC_HOSTNAME_STRICT": {
+                    "varName": "SSO_HOSTNAME_STRICT",
+                    "required": "false",
+                    "default": "false"
+                },
+                "KC_HTTP_ENABLED": {
+                    "varName": "SSO_HTTP_ENABLED",
+                    "required": "false",
+                    "default": "true"
+                },
+                "KC_PROXY": {
+                    "varName": "SSO_PROXY",
+                    "required": "false",
+                    "default": "edge"
+                },
+                "JAVA_OPTS_APPEND": {
+                    "varName": "SSO_JAVA_OPTS",
+                    "required": "false",
+                    "default": "-Xms256m -Xmx512m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m"
+                }
+            }
+        }
     }
 }

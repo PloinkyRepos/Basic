@@ -1,8 +1,11 @@
 {
   "container": "rockylinux",
-  "install": "echo 'No installation needed for simpleBash.'",
   "update": "",
-  "run": "bash"
-,
-  "about": "Bash shell environment. Run any bash commands and scripts"
+  "run": "bash",
+  "about": "Bash shell environment. Run any bash commands and scripts",
+  "profiles": {
+    "default": {
+      "install": "echo 'No installation needed for simpleBash.'"
+    }
+  }
 }

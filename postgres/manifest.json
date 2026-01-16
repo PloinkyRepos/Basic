@@ -2,16 +2,20 @@
     "container": "docker.io/library/postgres:16-alpine",
     "about": "PostgreSQL database server for Keycloak and other applications",
     "start": "postgres",
-    "env": [
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DB",
-        "PGDATA"
-    ],
     "ports": [
         "0.0.0.0:5432:5432"
     ],
     "volumes": {
         "postgres/data": "/var/lib/postgresql/data"
+    },
+    "profiles": {
+        "default": {
+            "env": [
+                "POSTGRES_USER",
+                "POSTGRES_PASSWORD",
+                "POSTGRES_DB",
+                "PGDATA"
+            ]
+        }
     }
 }

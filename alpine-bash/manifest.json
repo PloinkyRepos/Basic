@@ -1,8 +1,11 @@
 {
   "container": "alpine:latest",
-  "install": "apk add alpine-sdk",
   "update": "",
-  "cli": "bash"
-,
-  "about": "Bash shell environment. Run any bash commands and scripts"
+  "cli": "bash",
+  "about": "Bash shell environment. Run any bash commands and scripts",
+  "profiles": {
+    "default": {
+      "install": "apk add alpine-sdk"
+    }
+  }
 }

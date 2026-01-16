@@ -1,8 +1,11 @@
 {
   "container": "curlimages/curl:latest",
-  "install": "echo 'curl ready'",
   "update": "echo 'Always latest'",
-  "run": "curl"
-,
-  "about": "HTTP client. Make requests, test APIs, download files"
+  "run": "curl",
+  "about": "HTTP client. Make requests, test APIs, download files",
+  "profiles": {
+    "default": {
+      "install": "echo 'curl ready'"
+    }
+  }
 }
