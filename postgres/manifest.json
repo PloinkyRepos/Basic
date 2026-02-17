@@ -8,11 +8,12 @@
     "profiles": {
         "default": {
             "ports": ["0.0.0.0:5432:5432"],
-            "env": ["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "PGDATA"]
-        },
-        "dev": {
-        },
-        "prod": {
+            "env": {
+                "POSTGRES_USER": { "default": "postgres" },
+                "POSTGRES_PASSWORD": { "default": "postgres" },
+                "POSTGRES_DB": { "default": "postgres" },
+                "PGDATA": { "default": "/var/lib/postgresql/data/pgdata" }
+            }
         }
     }
 }
