@@ -7,7 +7,7 @@
     },
     "profiles": {
         "default": {
-            "ports": ["0.0.0.0:8180:8180"],
+            "ports": ["8180:8180"],
             "env": {
                 "KC_HTTP_PORT": { "varName": "SSO_HTTP_PORT", "required": false, "default": "8180" },
                 "KEYCLOAK_ADMIN": { "varName": "SSO_ADMIN", "required": false, "default": "admin" },
@@ -32,7 +32,7 @@
         "dev": {
         },
         "prod": {
-            "ports": ["0.0.0.0:8180:8180", "0.0.0.0:8443:8443"]
+            "ports": ["8180:8180", "8443:8443"]
         }
     }
 }
