@@ -1,10 +1,6 @@
 {
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
-    "identity": {
-        "principalId": "agent:basic/keycloak",
-        "agentName": "keycloak"
-    },
     "provides": {
         "auth-provider/v1": {
             "operations": [
