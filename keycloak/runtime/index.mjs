@@ -1,12 +1,11 @@
 /**
- * basic/keycloak runtime — auth-provider/v1 implementation.
+ * basic/keycloak runtime — SSO provider implementation.
  *
- * This is the provider-side implementation of the generic SSO bridge contract.
- * Ploinky core imports this module dynamically (via the capability binding
- * path registered for `workspace:sso`) and calls the exported operations.
+ * Ploinky core imports this module dynamically through the configured
+ * workspace SSO provider and calls the exported operations.
  *
- * Core stays provider-neutral: it knows only the contract and passes
- * `providerSession` blobs opaquely. All Keycloak-specific knowledge — realms,
+ * Core stays provider-neutral and passes `providerSession` blobs opaquely.
+ * All Keycloak-specific knowledge — realms,
  * PKCE, JWKS, claim parsing, `realm_access.roles` — lives here.
  *
  * Configuration resolution is injected by core via the `config` parameter so
@@ -78,11 +77,11 @@ async function fetchJson(url, options) {
 
 function assertConfig(config) {
   if (!config || typeof config !== 'object') {
-    throw new Error('auth-provider/basic-keycloak: missing config');
+    throw new Error('sso-provider/basic-keycloak: missing config');
   }
-  if (!config.baseUrl) throw new Error('auth-provider/basic-keycloak: baseUrl required');
-  if (!config.realm) throw new Error('auth-provider/basic-keycloak: realm required');
-  if (!config.clientId) throw new Error('auth-provider/basic-keycloak: clientId required');
+  if (!config.baseUrl) throw new Error('sso-provider/basic-keycloak: baseUrl required');
+  if (!config.realm) throw new Error('sso-provider/basic-keycloak: realm required');
+  if (!config.clientId) throw new Error('sso-provider/basic-keycloak: clientId required');
 }
 
 function readProviderValue(readValue, names, fallback) {
@@ -356,7 +355,7 @@ function consumePending(state) {
 
 export function createProvider({ getConfig } = {}) {
   if (typeof getConfig !== 'function') {
-    throw new Error('auth-provider/basic-keycloak: getConfig callback is required');
+    throw new Error('sso-provider/basic-keycloak: getConfig callback is required');
   }
   const metadataCache = createMetadataCache();
   const jwksCache = createJwksCache();
@@ -373,7 +372,7 @@ export function createProvider({ getConfig } = {}) {
 
   async function sso_begin_login({ redirectUri, prompt } = {}) {
     const cfg = await resolveConfig();
-    if (!redirectUri) throw new Error('auth-provider: redirectUri required');
+    if (!redirectUri) throw new Error('sso-provider: redirectUri required');
     const metadata = await ensureMetadata(cfg);
     const { verifier, challenge } = createPkcePair();
     const nonce = randomId(12);
@@ -483,7 +482,6 @@ export function createProvider({ getConfig } = {}) {
   }
 
   return {
-    contract: 'auth-provider/v1',
     name: 'basic/keycloak',
     sso_begin_login,
     sso_handle_callback,

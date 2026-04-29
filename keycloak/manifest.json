@@ -1,22 +1,7 @@
 {
     "container": "quay.io/keycloak/keycloak:24.0",
     "about": "Keycloak identity provider used to secure Ploinky workspaces via SSO.",
-    "provides": {
-        "auth-provider/v1": {
-            "operations": [
-                "sso_begin_login",
-                "sso_handle_callback",
-                "sso_validate_session",
-                "sso_refresh_session",
-                "sso_logout"
-            ],
-            "supportedScopes": [
-                "auth:login",
-                "auth:session",
-                "auth:refresh"
-            ]
-        }
-    },
+    "ssoProvider": true,
     "start": "start --hostname-strict=false --http-enabled=true --proxy-headers forwarded",
     "volumes": {
         "keycloak/keycloak-data": "/opt/keycloak/data"
