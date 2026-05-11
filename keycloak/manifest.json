@@ -4,7 +4,7 @@
     "ssoProvider": true,
     "start": "start --hostname-strict=false --http-enabled=true --proxy-headers forwarded",
     "volumes": {
-        "keycloak/keycloak-data": "/opt/keycloak/data"
+        ".ploinky/data/keycloak/data": "/opt/keycloak/data"
     },
     "volumeOptions": {
         "/opt/keycloak/data": {
@@ -19,7 +19,7 @@
                 "KC_HTTP_PORT": { "varName": "SSO_HTTP_PORT", "required": false, "default": "8180" },
                 "KEYCLOAK_ADMIN": { "varName": "SSO_ADMIN", "required": false, "default": "admin" },
                 "KEYCLOAK_ADMIN_PASSWORD": { "varName": "SSO_ADMIN_PASSWORD", "required": false, "default": "admin" },
-                "KEYCLOAK_URL": { "varName": "SSO_BASE_URL", "required": true },
+                "KEYCLOAK_URL": { "varName": "SSO_BASE_URL", "required": true, "default": "http://127.0.0.1:8180" },
                 "KEYCLOAK_REALM": { "varName": "SSO_REALM", "required": false, "default": "ploinky" },
                 "KEYCLOAK_CLIENT_ID": { "varName": "SSO_CLIENT_ID", "required": false, "default": "ploinky-router" },
                 "KEYCLOAK_SCOPE": { "varName": "SSO_SCOPE", "required": false },
