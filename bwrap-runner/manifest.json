@@ -1,6 +1,9 @@
 {
-  "container": "${BWRAP_RUNNER_IMAGE}",
+  "container": "assistos/bwrap-runner:node24-bookworm",
   "about": "Runs bounded commands inside inner bubblewrap sandboxes from a Linux container.",
+  "containerSecurity": {
+    "privileged": true
+  },
   "agent": "node /code/bin/healthcheck.mjs && sh /Agent/server/AgentServer.sh",
   "readiness": {
     "protocol": "mcp"
@@ -25,7 +28,7 @@
       "preinstall": "scripts/build-image.sh",
       "env": {
         "BWRAP_RUNNER_IMAGE": {
-          "default": "ploinky/bwrap-runner:node20-bookworm"
+          "default": "assistos/bwrap-runner:node24-bookworm"
         },
         "BWRAP_RUNNER_MAX_TIMEOUT_MS": {
           "default": "120000"
@@ -46,6 +49,15 @@
           "default": "4096"
         },
         "BWRAP_RUNNER_MAX_STDIN_BYTES": {
+          "default": "1048576"
+        },
+        "BWRAP_RUNNER_MAX_STAGED_FILES": {
+          "default": "64"
+        },
+        "BWRAP_RUNNER_MAX_STAGED_FILE_BYTES": {
+          "default": "262144"
+        },
+        "BWRAP_RUNNER_MAX_STAGED_TOTAL_BYTES": {
           "default": "1048576"
         }
       }

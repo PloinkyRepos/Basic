@@ -50,6 +50,10 @@ export const POLICY_LIMITS = Object.freeze({
     maxStdoutBytes: 64 * 1024,
     maxStderrBytes: 64 * 1024,
     maxEnvEntries: 16,
+    maxStagedFiles: 64,
+    maxStagedFileBytes: 256 * 1024,
+    maxStagedTotalBytes: 1024 * 1024,
+    maxStagedPathLength: 256,
 });
 
 export function getAllowedEnvKeys() {
@@ -165,7 +169,7 @@ export function validateInput(rawInput, options = {}) {
 
     // Reject any attempt to smuggle extra fields like mounts/binds/network.
     for (const key of Object.keys(rawInput)) {
-        if (!['command', 'stdin', 'timeoutMs', 'env'].includes(key)) {
+        if (!['command', 'stdin', 'timeoutMs', 'env', 'files'].includes(key)) {
             throw rejectInput(`unsupported field '${key}'`);
         }
     }
@@ -177,6 +181,7 @@ export function validateInput(rawInput, options = {}) {
         stdin,
         timeoutMs,
         env,
+        files: rawInput.files,
         network: networkAllowed ? 'inherit' : 'none',
         limits,
     };

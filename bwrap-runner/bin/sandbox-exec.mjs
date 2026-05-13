@@ -11,6 +11,7 @@ import {
     truncateOutput,
     validateInput,
 } from '../lib/policy.mjs';
+import { normalizeStagedFiles, stageFiles } from '../lib/staging.mjs';
 
 const BWRAP_PATH = '/usr/bin/bwrap';
 
@@ -25,7 +26,12 @@ function readPayload() {
     return new Promise((resolve, reject) => {
         const chunks = [];
         let total = 0;
-        const maxBytes = parseIntFromEnv('BWRAP_RUNNER_MAX_STDIN_BYTES', POLICY_LIMITS.maxStdinBytes) + 8 * 1024;
+        const maxStagedPayloadBytes = Math.ceil(
+            parseIntFromEnv('BWRAP_RUNNER_MAX_STAGED_TOTAL_BYTES', POLICY_LIMITS.maxStagedTotalBytes) * 4 / 3,
+        );
+        const maxBytes = parseIntFromEnv('BWRAP_RUNNER_MAX_STDIN_BYTES', POLICY_LIMITS.maxStdinBytes)
+            + maxStagedPayloadBytes
+            + 64 * 1024;
         process.stdin.on('data', (chunk) => {
             total += chunk.length;
             if (total > maxBytes) {
@@ -228,6 +234,10 @@ async function main() {
         maxStdoutBytes: parseIntFromEnv('BWRAP_RUNNER_MAX_STDOUT_BYTES', POLICY_LIMITS.maxStdoutBytes),
         maxStderrBytes: parseIntFromEnv('BWRAP_RUNNER_MAX_STDERR_BYTES', POLICY_LIMITS.maxStderrBytes),
         maxEnvEntries: POLICY_LIMITS.maxEnvEntries,
+        maxStagedFiles: parseIntFromEnv('BWRAP_RUNNER_MAX_STAGED_FILES', POLICY_LIMITS.maxStagedFiles),
+        maxStagedFileBytes: parseIntFromEnv('BWRAP_RUNNER_MAX_STAGED_FILE_BYTES', POLICY_LIMITS.maxStagedFileBytes),
+        maxStagedTotalBytes: parseIntFromEnv('BWRAP_RUNNER_MAX_STAGED_TOTAL_BYTES', POLICY_LIMITS.maxStagedTotalBytes),
+        maxStagedPathLength: POLICY_LIMITS.maxStagedPathLength,
     };
 
     const allowNetwork = decideNetworkPolicy(process.env.BWRAP_RUNNER_ALLOW_NETWORK);
@@ -235,6 +245,18 @@ async function main() {
     let validated;
     try {
         validated = validateInput(payload, { limits, allowNetwork });
+    } catch (err) {
+        emit({
+            ok: false,
+            error: { code: err.code || 'BWRAP_RUNNER_INVALID_INPUT', message: err.message || String(err) },
+        });
+        process.exit(1);
+        return;
+    }
+
+    let stagedFiles;
+    try {
+        stagedFiles = normalizeStagedFiles(validated.files, { limits: validated.limits });
     } catch (err) {
         emit({
             ok: false,
@@ -268,6 +290,21 @@ async function main() {
             error: {
                 code: 'BWRAP_RUNNER_JOB_PREP_FAILED',
                 message: `failed to prepare job directory: ${err?.message || err}`,
+            },
+        });
+        process.exit(1);
+        return;
+    }
+
+    try {
+        stageFiles(dirs.workDir, stagedFiles);
+    } catch (err) {
+        emit({
+            ok: false,
+            jobId: dirs.jobId,
+            error: {
+                code: err.code || 'BWRAP_RUNNER_STAGE_FILES_FAILED',
+                message: `failed to stage input files: ${err?.message || err}`,
             },
         });
         process.exit(1);

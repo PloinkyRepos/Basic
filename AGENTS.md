@@ -44,6 +44,10 @@ gap-free, starting with `DS000-vision.md` and `DS001-coding-style.md`.
 rationale belongs inside the affected DS file rather than in a separate
 decision log.
 
+Code must follow the SOLID and DRY invariants in
+`docs/specs/DS001-coding-style.md`. Use design patterns when they clarify
+stable responsibilities; avoid speculative abstraction in small agents.
+
 The GAMP skill itself must be updated when new skill families, coding-style
 rules, or project bootstrap rules are introduced.
 

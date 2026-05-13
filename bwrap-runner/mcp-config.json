@@ -3,7 +3,7 @@
     {
       "name": "sandbox_exec",
       "title": "Sandbox Exec",
-      "description": "Run a bounded command inside a nested bubblewrap sandbox. Stdin can be supplied. Network is disabled by default. Output is truncated to configured caps.",
+      "description": "Run a bounded command inside a nested bubblewrap sandbox. Stdin and small staged files can be supplied. Network is disabled by default. Output is truncated to configured caps.",
       "command": "/code/bin/sandbox-exec.mjs",
       "cwd": "/code",
       "timeoutMs": 130000,
@@ -32,6 +32,33 @@
           "optional": true,
           "additionalProperties": true,
           "description": "Optional environment overrides. Only allowlisted keys are forwarded; values are validated."
+        },
+        "files": {
+          "type": "array",
+          "optional": true,
+          "maxItems": 64,
+          "description": "Optional files to stage under /work before command execution. Paths must be relative and normalized.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "content": {
+                "type": "string"
+              },
+              "encoding": {
+                "type": "string",
+                "optional": true,
+                "enum": [
+                  "utf8",
+                  "base64"
+                ]
+              }
+            }
+          }
         }
       }
     }

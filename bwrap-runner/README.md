@@ -10,11 +10,20 @@ Basic repository is installed or enabled in a Ploinky workspace, the usual
 agent resolution path can address it by `basic/bwrap-runner` or by the
 short name `bwrap-runner` when that name is unambiguous.
 
-The default profile uses `BWRAP_RUNNER_IMAGE` with default value
-`ploinky/bwrap-runner:node20-bookworm`. Its host `preinstall` hook runs
-`scripts/build-image.sh`; if that image is missing locally, the script
-builds it with Podman or Docker before container creation. Set
-`BWRAP_RUNNER_IMAGE` to use a pre-published image instead.
+The manifest uses the concrete image reference
+`assistos/bwrap-runner:node24-bookworm`. The default profile also exposes
+`BWRAP_RUNNER_IMAGE` with the same default for the host `preinstall` hook.
+That hook runs `scripts/build-image.sh`; if the image is missing locally, the
+script builds it with Podman or Docker before container creation.
+The manifest requests `containerSecurity.privileged: true` so the outer OCI
+runtime permits the inner bubblewrap sandbox to create namespaces and mount
+`/proc`.
+
+The canonical published image is built by the GitHub Actions workflow
+`.github/workflows/publish-bwrap-runner.yml` on `ubuntu-latest` and pushed to
+Docker Hub as `assistos/bwrap-runner:node24-bookworm` for both `linux/amd64`
+and `linux/arm64`. Local image builds are still useful for development smoke
+tests, but they are not the publishing authority.
 
 ## Scope
 
@@ -30,6 +39,11 @@ Inputs:
 
 - `command` (string, required) - shell command run via `/bin/sh -lc`.
 - `stdin` (string, optional) - fed to the child process.
+- `files` (array, optional) - staged under `/work` before execution.
+  Each entry is `{ "path": "relative/name", "content": "...",
+  "encoding": "utf8"|"base64" }`. Paths must be normalized relative paths,
+  are never interpreted as host paths, and are capped by the runner's staged
+  file limits.
 - `timeoutMs` (number, optional) - capped server-side by
   `BWRAP_RUNNER_MAX_TIMEOUT_MS`.
 - `env` (object, optional) - only allowlisted keys (`PATH`, `HOME`,
@@ -51,6 +65,11 @@ Default policy applied inside the inner sandbox:
 - Per-job read-write `/work` directory and a sibling `/outputs`
   directory, both created under
   `BWRAP_RUNNER_STATE/jobs/<jobId>/`.
+
+The `files` input is the preferred way for callers to provide prompts,
+resources, and small driver configuration. Callers should not embed generated
+runtime code in `command` just to create `/work` files; the runner owns that
+staging responsibility and keeps it testable as policy code.
 
 The wrapper returns a single-line JSON record:
 

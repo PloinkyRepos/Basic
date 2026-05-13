@@ -29,6 +29,12 @@ enough that policy validation, argument generation, process execution, and
 formatting can be tested independently. Comments should explain non-obvious
 policy or runtime decisions; they must not narrate obvious assignments.
 
+Code must obey SOLID and DRY design principles. Separate validation, policy
+construction, I/O staging, process execution, and result formatting into
+cohesive units with explicit contracts. Use design patterns only where they
+clarify stable responsibilities or extension points; avoid speculative
+abstractions that make a small agent harder to audit.
+
 Shell scripts must start with an explicit shebang, fail fast with `set -e` or
 `set -eu` when appropriate, and avoid assuming a particular interactive shell.
 Scripts invoked by Ploinky host lifecycle hooks must be executable.
@@ -62,6 +68,13 @@ rules across README files, proposal documents, and transient handoff notes.
 Response: Tests that verify pure policy must run everywhere. Tests that require
 Linux bubblewrap or nested user namespaces must first probe those capabilities
 and skip with a clear reason when the host cannot provide them.
+
+### Question #3: Why make SOLID and DRY explicit coding invariants?
+
+Response: Sandbox agents are easiest to audit when each module has one clear
+responsibility and repeated policy logic is centralized. The invariant keeps
+validation, staging, and execution behavior testable without encouraging
+large speculative frameworks.
 
 ## Conclusion
 
