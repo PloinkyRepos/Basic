@@ -1,0 +1,39 @@
+{
+  "tools": [
+    {
+      "name": "sandbox_exec",
+      "title": "Sandbox Exec",
+      "description": "Run a bounded command inside a nested bubblewrap sandbox. Stdin can be supplied. Network is disabled by default. Output is truncated to configured caps.",
+      "command": "/code/bin/sandbox-exec.mjs",
+      "cwd": "/code",
+      "timeoutMs": 130000,
+      "inputSchema": {
+        "command": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "description": "Shell command to execute inside the sandbox via /bin/sh -lc."
+        },
+        "stdin": {
+          "type": "string",
+          "optional": true,
+          "maxLength": 1048576,
+          "description": "Optional standard input to feed to the command."
+        },
+        "timeoutMs": {
+          "type": "number",
+          "optional": true,
+          "min": 100,
+          "max": 120000,
+          "description": "Maximum runtime in milliseconds. Capped server-side."
+        },
+        "env": {
+          "type": "object",
+          "optional": true,
+          "additionalProperties": true,
+          "description": "Optional environment overrides. Only allowlisted keys are forwarded; values are validated."
+        }
+      }
+    }
+  ]
+}

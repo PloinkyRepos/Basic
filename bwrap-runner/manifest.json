@@ -1,0 +1,66 @@
+{
+  "container": "${BWRAP_RUNNER_IMAGE}",
+  "about": "Runs bounded commands inside inner bubblewrap sandboxes from a Linux container.",
+  "agent": "node /code/bin/healthcheck.mjs && sh /Agent/server/AgentServer.sh",
+  "readiness": {
+    "protocol": "mcp"
+  },
+  "health": {
+    "readiness": {
+      "script": "healthcheck.sh",
+      "interval": 5,
+      "timeout": 10,
+      "failureThreshold": 12
+    }
+  },
+  "profiles": {
+    "default": {
+      "ports": [
+        "127.0.0.1:7119:7000"
+      ],
+      "mounts": {
+        "code": "ro",
+        "skills": "ro"
+      },
+      "preinstall": "scripts/build-image.sh",
+      "env": {
+        "BWRAP_RUNNER_IMAGE": {
+          "default": "ploinky/bwrap-runner:node20-bookworm"
+        },
+        "BWRAP_RUNNER_MAX_TIMEOUT_MS": {
+          "default": "120000"
+        },
+        "BWRAP_RUNNER_DEFAULT_TIMEOUT_MS": {
+          "default": "30000"
+        },
+        "BWRAP_RUNNER_MAX_STDOUT_BYTES": {
+          "default": "65536"
+        },
+        "BWRAP_RUNNER_MAX_STDERR_BYTES": {
+          "default": "65536"
+        },
+        "BWRAP_RUNNER_ALLOW_NETWORK": {
+          "default": "false"
+        },
+        "BWRAP_RUNNER_MAX_COMMAND_LENGTH": {
+          "default": "4096"
+        },
+        "BWRAP_RUNNER_MAX_STDIN_BYTES": {
+          "default": "1048576"
+        }
+      }
+    }
+  },
+  "runtime": {
+    "resources": {
+      "persistentStorage": {
+        "key": "bwrap-runner",
+        "containerPath": "/var/lib/ploinky-bwrap-runner",
+        "chmod": 448
+      },
+      "env": {
+        "BWRAP_RUNNER_STATE": "{{STORAGE_CONTAINER_PATH}}"
+      }
+    }
+  }
+}

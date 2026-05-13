@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basic Agent Catalog Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+    <script src="partials-loader.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand" href="index.html">Basic Agent Catalog Documentation</a>
+            <nav class="nav" aria-label="Primary">
+                <a href="index.html">Overview</a>
+                <a href="bwrap-runner.html">bwrap-runner</a>
+                <a href="specsLoader.html?spec=matrix.md">Specifications</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <p class="breadcrumb"><a href="index.html">Overview</a> / bwrap-runner</p>
+        <h1>bwrap-runner</h1>
+        <p class="lead">
+            <code>bwrap-runner</code> is a Basic catalog agent that exposes one
+            MCP tool, <code>sandbox_exec</code>, for bounded command execution
+            inside an inner bubblewrap sandbox. It is sandboxed job delegation,
+            not a replacement for Ploinky's whole-agent
+            <code>lite-sandbox: true</code> backend.
+        </p>
+
+        <section>
+            <h2>Runtime Shape</h2>
+            <p>
+                The manifest runs through normal Ploinky container execution.
+                The image is resolved from <code>BWRAP_RUNNER_IMAGE</code>,
+                whose default is <code>ploinky/bwrap-runner:node20-bookworm</code>.
+                The default profile runs <code>scripts/build-image.sh</code>
+                as a host preinstall hook so the local Podman or Docker image
+                is built before container creation if it is not already present.
+            </p>
+            <pre class="mermaid">
+sequenceDiagram
+    participant Caller as Caller agent
+    participant Router as Ploinky router
+    participant Runner as bwrap-runner container
+    participant Bwrap as inner bwrap job
+    Caller->>Router: invoke sandbox_exec
+    Router->>Runner: AgentServer tool payload
+    Runner->>Runner: validate JSON and policy
+    Runner->>Bwrap: spawn /usr/bin/bwrap
+    Bwrap-->>Runner: stdout, stderr, exit status
+    Runner-->>Router: structured JSON record
+    Router-->>Caller: tool result
+            </pre>
+        </section>
+
+        <section>
+            <h2>Sandbox Policy</h2>
+            <p>
+                The tool wrapper accepts only <code>command</code>,
+                <code>stdin</code>, <code>timeoutMs</code>, and allowlisted
+                <code>env</code> entries. It rejects extra fields such as raw
+                mounts, binds, capabilities, network selectors, or direct
+                bubblewrap flags. The generated bubblewrap argv is built by
+                <code>bwrap-runner/lib/policy.mjs</code> so policy construction
+                can be tested without invoking bubblewrap.
+            </p>
+            <p>
+                Each job receives a private state directory under
+                <code>BWRAP_RUNNER_STATE/jobs/&lt;jobId&gt;/</code>. The inner
+                sandbox gets a writable <code>/work</code>, writable
+                <code>/outputs</code>, a tmpfs <code>/tmp</code>,
+                <code>/proc</code>, <code>/dev</code>, and read-only binds for
+                selected system paths that exist in the runner image. The
+                wrapper starts the child process with an empty outer environment
+                and lets bubblewrap set only validated environment keys.
+            </p>
+        </section>
+
+        <section>
+            <h2>Readiness And Limits</h2>
+            <p>
+                The manifest <code>agent</code> command runs
+                <code>bin/healthcheck.mjs</code> before
+                <code>AgentServer.sh</code>, and <code>healthcheck.sh</code>
+                wires the same probe into Ploinky readiness checks. The probe
+                runs a real nested-bwrap command. If the host kernel or outer
+                OCI runtime blocks nested user namespaces, the agent fails
+                startup or readiness with a structured error and guidance.
+            </p>
+            <div class="callout">
+                <p>
+                    The image supplies <code>bwrap</code>, but it cannot change
+                    host kernel sysctls, Docker or Podman seccomp policy,
+                    AppArmor policy, or rootless runtime namespace rules.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Verification</h2>
+            <p>
+                The focused test suite validates argument policy, environment
+                clearing, timeout limits, output tail retention, invalid payload
+                errors visible to MCP callers, manifest startup gates, Basic
+                catalog placement, and the nested-bwrap health probe. The
+                health probe test skips when the local host does not provide
+                <code>/usr/bin/bwrap</code> or nested namespace support.
+            </p>
+            <p>
+                The normative contract for this agent is
+                <a href="specsLoader.html?spec=DS002-bwrap-runner-agent.md">DS002 bwrap Runner Agent</a>.
+            </p>
+        </section>
+    </main>
+    <div data-partial="partials/footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basic Agent Catalog Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+    <script src="partials-loader.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand" href="index.html">Basic Agent Catalog Documentation</a>
+            <nav class="nav" aria-label="Primary">
+                <a href="index.html">Overview</a>
+                <a href="bwrap-runner.html">bwrap-runner</a>
+                <a href="specsLoader.html?spec=matrix.md">Specifications</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <p class="breadcrumb">Overview</p>
+        <h1>Basic Agent Catalog Documentation</h1>
+        <p class="lead">
+            The Basic repository is a Ploinky agent catalog. Each top-level
+            directory is an agent package that can be cloned into a workspace
+            under <code>.ploinky/repos/basic/</code> and resolved through the
+            normal Ploinky agent registry.
+        </p>
+
+        <section>
+            <h2>Repository Role</h2>
+            <p>
+                The catalog keeps agent implementations self-contained. A Basic
+                agent owns its manifest, local scripts, optional MCP
+                configuration, runtime support files, and agent-local
+                documentation. Shared runtime behavior such as container
+                startup, profile merging, host lifecycle hooks, routing, and
+                invocation security remains in Ploinky itself.
+            </p>
+            <pre class="mermaid">
+flowchart LR
+    Workspace[Ploinky workspace] --> Repo[.ploinky/repos/basic]
+    Repo --> Agent[Agent directory]
+    Agent --> Manifest[manifest.json]
+    Agent --> Runtime[Local scripts and MCP config]
+    Manifest --> Ploinky[Ploinky runtime]
+            </pre>
+        </section>
+
+        <section>
+            <h2>Agent Layout</h2>
+            <p>
+                Most existing agents are simple container or shell entries with
+                a single <code>manifest.json</code>. Agents with larger
+                behavior, such as <code>bwrap-runner</code>, keep policy
+                modules, command wrappers, smoke checks, and documentation
+                inside their own directory.
+            </p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Path</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>&lt;agent&gt;/manifest.json</code></td>
+                            <td>Declares image, entry command, profile hooks, ports, mounts, resources, and readiness.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;agent&gt;/mcp-config.json</code></td>
+                            <td>Declares MCP tools when an agent exposes tool commands through AgentServer.</td>
+                        </tr>
+                        <tr>
+                            <td><code>tests/unit/</code></td>
+                            <td>Contains focused Node tests for agent-local policy and smoke behavior.</td>
+                        </tr>
+                        <tr>
+                            <td><code>docs/specs/</code></td>
+                            <td>Contains DS specifications. The matrix is reachable through <code>specsLoader.html?spec=matrix.md</code>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>Coding And Tests</h2>
+            <p>
+                <code>DS001-coding-style.md</code> is the coding-style
+                authority for this repository. JavaScript modules use ES module
+                syntax, four-space indentation, and focused functions with
+                narrow responsibilities. Tests should be placed under
+                <code>tests/unit/</code> when they validate reusable policy,
+                manifest, or wrapper behavior without needing a full Ploinky
+                workspace.
+            </p>
+            <p>
+                Run the bwrap-runner tests with
+                <code>node --test tests/unit/bwrapRunnerPolicy.test.mjs tests/unit/bwrapRunnerSmoke.test.mjs</code>.
+                The nested-bwrap smoke test skips cleanly when
+                <code>/usr/bin/bwrap</code> or nested user namespaces are
+                unavailable.
+            </p>
+        </section>
+
+        <section>
+            <h2>Specifications</h2>
+            <p>
+                The DS set is the source of truth for repository contracts.
+                Start with <a href="specsLoader.html?spec=DS000-vision.md">DS000</a>,
+                then <a href="specsLoader.html?spec=DS001-coding-style.md">DS001</a>,
+                and use the <a href="specsLoader.html?spec=matrix.md">specification matrix</a>
+                to reach agent-specific contracts.
+            </p>
+        </section>
+    </main>
+    <div data-partial="partials/footer.html"></div>
+</body>
+</html>
