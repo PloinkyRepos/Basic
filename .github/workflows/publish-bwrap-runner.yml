@@ -2,14 +2,6 @@ name: Publish bwrap-runner image
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/publish-bwrap-runner.yml
-      - bwrap-runner/Dockerfile
-      - bwrap-runner/scripts/build-image.sh
-      - bwrap-runner/manifest.json
 
 permissions:
   contents: read

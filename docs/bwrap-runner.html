@@ -48,10 +48,12 @@
                 <code>containerSecurity.privileged: true</code> because the
                 container is itself a sandbox host for inner bubblewrap jobs.
                 The published image is produced by
-                <code>.github/workflows/publish-bwrap-runner.yml</code> on a
-                Linux GitHub runner with Docker Buildx and is pushed to Docker
-                Hub for both <code>linux/amd64</code> and
-                <code>linux/arm64</code>.
+                manually dispatching
+                <code>.github/workflows/publish-bwrap-runner.yml</code>. It
+                runs on a Linux GitHub runner with Docker Buildx, pushes to
+                Docker Hub for both <code>linux/amd64</code> and
+                <code>linux/arm64</code>, and must not publish automatically
+                on repository pushes.
             </p>
             <pre class="mermaid">
 sequenceDiagram

@@ -19,11 +19,13 @@ The manifest requests `containerSecurity.privileged: true` so the outer OCI
 runtime permits the inner bubblewrap sandbox to create namespaces and mount
 `/proc`.
 
-The canonical published image is built by the GitHub Actions workflow
-`.github/workflows/publish-bwrap-runner.yml` on `ubuntu-latest` and pushed to
-Docker Hub as `assistos/bwrap-runner:node24-bookworm` for both `linux/amd64`
-and `linux/arm64`. Local image builds are still useful for development smoke
-tests, but they are not the publishing authority.
+The canonical published image is built by manually dispatching the GitHub
+Actions workflow `.github/workflows/publish-bwrap-runner.yml`. The workflow
+runs on `ubuntu-latest` and pushes to Docker Hub as
+`assistos/bwrap-runner:node24-bookworm` for both `linux/amd64` and
+`linux/arm64`. It must not publish automatically on repository pushes. Local
+image builds are still useful for development smoke tests, but they are not
+the publishing authority.
 
 ## Scope
 

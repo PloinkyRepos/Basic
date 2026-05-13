@@ -446,6 +446,8 @@ test('publish workflow builds the Docker Hub image from Linux for both supported
     const workflowPath = path.resolve(__dirname, '../../.github/workflows/publish-bwrap-runner.yml');
     const workflow = fs.readFileSync(workflowPath, 'utf8');
 
+    assert.match(workflow, /^  workflow_dispatch:\s*$/m);
+    assert.doesNotMatch(workflow, /^  push:\s*$/m);
     assert.match(workflow, /runs-on:\s*ubuntu-latest/);
     assert.match(workflow, /docker\/setup-buildx-action@v3/);
     assert.match(workflow, /docker\/login-action@v3/);

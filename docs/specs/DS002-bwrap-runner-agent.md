@@ -35,8 +35,10 @@ selection state.
 
 The canonical published image must be produced by the repository GitHub
 Actions workflow `.github/workflows/publish-bwrap-runner.yml`. That workflow
-must run on a Linux GitHub runner, use Docker Buildx, authenticate to Docker
-Hub with the repository secret `DOCKERHUB_TOKEN`, and publish
+must be manual-dispatch only through `workflow_dispatch`; it must not publish
+automatically on `push` or other repository events. When dispatched, it must
+run on a Linux GitHub runner, use Docker Buildx, authenticate to Docker Hub
+with the repository secret `DOCKERHUB_TOKEN`, and publish
 `assistos/bwrap-runner:node24-bookworm` for both `linux/amd64` and
 `linux/arm64`. Local Podman or Docker builds are development and smoke-test
 helpers only; they must not be treated as the release publishing authority.
