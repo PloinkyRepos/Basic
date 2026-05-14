@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-image="${BWRAP_RUNNER_IMAGE:-assistos/bwrap-runner:node24-bookworm}"
+image="${BWRAP_RUNNER_IMAGE:-assistos/bwrap-runner:node24-python-bookworm}"
 
 if command -v podman >/dev/null 2>&1; then
     runtime=podman

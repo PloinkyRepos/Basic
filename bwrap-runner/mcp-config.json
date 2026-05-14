@@ -59,6 +59,31 @@
               }
             }
           }
+        },
+        "runtimeBundle": {
+          "type": "object",
+          "optional": true,
+          "description": "Optional provider-owned runtime bundle to bind read-only at /runtime. Resolved under BWRAP_RUNNER_RUNTIME_ROOT (default /data/research-runtimes).",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Bundle id (lowercase alnum plus ._-)."
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "description": "Bundle version (lowercase alnum plus ._-)."
+            },
+            "digest": {
+              "type": "string",
+              "optional": true,
+              "maxLength": 256,
+              "description": "Optional manifest digest to require."
+            }
+          }
         }
       }
     }

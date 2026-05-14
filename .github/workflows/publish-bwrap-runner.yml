@@ -12,7 +12,7 @@ concurrency:
 
 env:
   IMAGE_NAME: assistos/bwrap-runner
-  IMAGE_TAG: node24-bookworm
+  IMAGE_TAG: node24-python-bookworm
 
 jobs:
   publish:
