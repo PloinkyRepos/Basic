@@ -419,15 +419,49 @@ test('wrapper end-to-end: invalid staged files return a structured, MCP-visible 
 test('manifest gates AgentServer startup on nested-bwrap healthcheck and builds the local image', () => {
     const manifestPath = path.resolve(__dirname, '../../bwrap-runner/manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    assert.strictEqual(manifest.container, 'assistos/bwrap-runner:node24-bookworm');
+    assert.strictEqual(manifest.container, 'assistos/bwrap-runner:node24-python-bookworm');
     assert.deepStrictEqual(manifest.containerSecurity, { privileged: true });
     assert.strictEqual(
         manifest.profiles.default.env.BWRAP_RUNNER_IMAGE.default,
-        'assistos/bwrap-runner:node24-bookworm',
+        'assistos/bwrap-runner:node24-python-bookworm',
+    );
+    assert.strictEqual(
+        manifest.profiles.default.env.BWRAP_RUNNER_RUNTIME_ROOT.default,
+        '/data/research-runtimes',
+        'runtime root default must be the provider-owned data path, not /shared/research-runtimes',
     );
     assert.match(manifest.agent, /healthcheck\.mjs/);
     assert.match(manifest.agent, /AgentServer\.sh/);
     assert.strictEqual(manifest.profiles.default.preinstall, 'scripts/build-image.sh');
+});
+
+test('Dockerfile ships the generic Python runtime but no backend-specific packages', () => {
+    const dockerfilePath = path.resolve(__dirname, '../../bwrap-runner/Dockerfile');
+    const dockerfile = fs.readFileSync(dockerfilePath, 'utf8');
+
+    assert.match(dockerfile, /^FROM node:24\.15\.0-bookworm-slim$/m);
+    assert.match(dockerfile, /python3\b/);
+    assert.match(dockerfile, /python3-pip\b/);
+    assert.match(dockerfile, /python3-dev\b/);
+    assert.match(dockerfile, /python3-venv\b/);
+    assert.match(dockerfile, /build-essential\b/);
+    assert.doesNotMatch(dockerfile, /open-interpreter/);
+    assert.doesNotMatch(dockerfile, /from interpreter import interpreter/);
+    assert.doesNotMatch(dockerfile, /research-open-interpreter/);
+
+    const shimPath = path.resolve(__dirname, '../../bwrap-runner/bin/research-open-interpreter');
+    assert.ok(!fs.existsSync(shimPath), 'backend-specific shim must not ship with bwrap-runner');
+});
+
+test('Dockerfile installs the local sandbox runner at a stable image path', () => {
+    const dockerfilePath = path.resolve(__dirname, '../../bwrap-runner/Dockerfile');
+    const dockerfile = fs.readFileSync(dockerfilePath, 'utf8');
+    assert.match(dockerfile, /COPY\s+bin\/\s+\/opt\/bwrap-runner\/bin\//,
+        'bin/ must be copied to /opt/bwrap-runner/bin/ in the image');
+    assert.match(dockerfile, /COPY\s+lib\/\s+\/opt\/bwrap-runner\/lib\//,
+        'lib/ must be copied to /opt/bwrap-runner/lib/ in the image');
+    assert.match(dockerfile, /\/usr\/local\/bin\/bwrap-sandbox-exec/,
+        'image must install a /usr/local/bin/bwrap-sandbox-exec wrapper');
 });
 
 test('agent is catalogued as a normal Basic repository agent', () => {
@@ -453,7 +487,7 @@ test('publish workflow builds the Docker Hub image from Linux for both supported
     assert.match(workflow, /docker\/login-action@v3/);
     assert.match(workflow, /docker\/build-push-action@v6/);
     assert.match(workflow, /IMAGE_NAME:\s*assistos\/bwrap-runner/);
-    assert.match(workflow, /IMAGE_TAG:\s*node24-bookworm/);
+    assert.match(workflow, /IMAGE_TAG:\s*node24-python-bookworm/);
     assert.match(workflow, /platforms:\s*linux\/amd64,linux\/arm64/);
     assert.match(workflow, /password:\s*\$\{\{\s*secrets\.DOCKERHUB_TOKEN\s*\}\}/);
 });

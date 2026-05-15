@@ -12,6 +12,7 @@ import {
     validateInput,
 } from '../lib/policy.mjs';
 import { normalizeStagedFiles, stageFiles } from '../lib/staging.mjs';
+import { resolveRuntimeBundle } from '../lib/runtime-bundles.mjs';
 
 const BWRAP_PATH = '/usr/bin/bwrap';
 
@@ -311,10 +312,27 @@ async function main() {
         return;
     }
 
+    let resolvedRuntimeBundle = null;
+    try {
+        resolvedRuntimeBundle = resolveRuntimeBundle(validated.runtimeBundle, { env: process.env });
+    } catch (err) {
+        emit({
+            ok: false,
+            jobId: dirs.jobId,
+            error: {
+                code: err.code || 'BWRAP_RUNNER_INVALID_RUNTIME_BUNDLE',
+                message: err.message || String(err),
+            },
+        });
+        process.exit(1);
+        return;
+    }
+
     const args = buildBwrapArgs(validated, {
         workDir: dirs.workDir,
         outputsDir: dirs.outputsDir,
         existingSystemPaths: existingSystemPathsSet(),
+        runtimeBundle: resolvedRuntimeBundle,
     });
 
     const result = await runBwrap(args, validated, validated.limits);

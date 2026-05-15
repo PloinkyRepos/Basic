@@ -169,7 +169,7 @@ export function validateInput(rawInput, options = {}) {
 
     // Reject any attempt to smuggle extra fields like mounts/binds/network.
     for (const key of Object.keys(rawInput)) {
-        if (!['command', 'stdin', 'timeoutMs', 'env', 'files'].includes(key)) {
+        if (!['command', 'stdin', 'timeoutMs', 'env', 'files', 'runtimeBundle'].includes(key)) {
             throw rejectInput(`unsupported field '${key}'`);
         }
     }
@@ -182,6 +182,7 @@ export function validateInput(rawInput, options = {}) {
         timeoutMs,
         env,
         files: rawInput.files,
+        runtimeBundle: rawInput.runtimeBundle ?? null,
         network: networkAllowed ? 'inherit' : 'none',
         limits,
     };
@@ -215,6 +216,13 @@ export function buildBwrapArgs(validated, paths) {
     const existingPaths = paths.existingSystemPaths instanceof Set
         ? paths.existingSystemPaths
         : null;
+    const runtimeBundle = paths.runtimeBundle && isPlainObject(paths.runtimeBundle)
+        ? paths.runtimeBundle
+        : null;
+    let runtimeBundleDir = null;
+    if (runtimeBundle) {
+        runtimeBundleDir = ensureAbsolutePath('paths.runtimeBundle.bundleDir', runtimeBundle.bundleDir);
+    }
 
     const args = [];
     args.push('--die-with-parent');
@@ -227,8 +235,22 @@ export function buildBwrapArgs(validated, paths) {
     }
     args.push('--clearenv');
 
-    // Allowlisted env: defaults first, then validated overrides.
-    const finalEnv = { ...DEFAULT_ENV, ...validated.env };
+    // Allowlisted env: defaults first, then manifest-derived runtime env, then
+    // validated caller overrides. Runtime-derived env (e.g. PYTHONPATH from
+    // manifest.python.pythonPath) is applied independently of the user env
+    // allowlist because it comes from a validated bundle manifest, not caller
+    // input.
+    const finalEnv = { ...DEFAULT_ENV };
+    if (runtimeBundle && isPlainObject(runtimeBundle.env)) {
+        for (const [key, value] of Object.entries(runtimeBundle.env)) {
+            if (typeof value === 'string') {
+                finalEnv[key] = value;
+            }
+        }
+    }
+    for (const [key, value] of Object.entries(validated.env || {})) {
+        finalEnv[key] = value;
+    }
     for (const key of Object.keys(finalEnv).sort()) {
         args.push('--setenv', key, finalEnv[key]);
     }
@@ -245,6 +267,9 @@ export function buildBwrapArgs(validated, paths) {
     args.push('--bind', workDir, '/work');
     if (outputsDir) {
         args.push('--bind', outputsDir, '/outputs');
+    }
+    if (runtimeBundleDir) {
+        args.push('--ro-bind', runtimeBundleDir, '/runtime');
     }
     args.push('--chdir', '/work');
 

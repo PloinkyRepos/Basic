@@ -1,6 +1,6 @@
 {
-  "container": "assistos/bwrap-runner:node24-bookworm",
-  "about": "Runs bounded commands inside inner bubblewrap sandboxes from a Linux container.",
+  "container": "assistos/bwrap-runner:node24-python-bookworm",
+  "about": "Compatibility-only MCP wrapper around the shared local sandbox runner. Research provider agents use the bwrap-runner image directly and invoke /usr/local/bin/bwrap-sandbox-exec locally; they must not depend on this agent.",
   "containerSecurity": {
     "privileged": true
   },
@@ -28,7 +28,7 @@
       "preinstall": "scripts/build-image.sh",
       "env": {
         "BWRAP_RUNNER_IMAGE": {
-          "default": "assistos/bwrap-runner:node24-bookworm"
+          "default": "assistos/bwrap-runner:node24-python-bookworm"
         },
         "BWRAP_RUNNER_MAX_TIMEOUT_MS": {
           "default": "120000"
@@ -59,6 +59,9 @@
         },
         "BWRAP_RUNNER_MAX_STAGED_TOTAL_BYTES": {
           "default": "1048576"
+        },
+        "BWRAP_RUNNER_RUNTIME_ROOT": {
+          "default": "/data/research-runtimes"
         }
       }
     }
